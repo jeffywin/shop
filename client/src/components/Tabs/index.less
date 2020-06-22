@@ -1,0 +1,31 @@
+.footer {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    height: 1.2rem;
+    width: 100%;
+    color: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-top: .02rem solid #D5D5D5; 
+    a {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        flex: 1;
+        color:#000;
+        i{
+            font-size:.5rem;
+        }
+        span{
+            font-size:.3rem;
+            line-height: .5rem;
+        }
+        &.active{
+            color:orange;
+            font-weight: bold;
+        }
+    }   
+}
