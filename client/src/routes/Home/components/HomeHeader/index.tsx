@@ -25,6 +25,7 @@ function HomeHeader(props: Props) {
      {
         isMenuVisible && (
           <ul
+            className="category"
             onClick={setCurrentCatgory} 
             >
             <li data-category="all" className={classnames({active: props.currentCategory === 'all'})}>全部车型</li>

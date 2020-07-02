@@ -11,6 +11,7 @@ import Home from "./routes/Home/index";
 import Mine from "./routes/Mine/index";
 import Profile from "./routes/Profile/index";
 import Tabs from "@/components/Tabs";
+import "./assets/style/common.less";
 
 ReactDOM.render(
   <Provider store={store}>
