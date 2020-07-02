@@ -12,7 +12,10 @@ type Props = PropsWithChildren<RouteComponentProps & ReturnType<typeof mapStateT
 function Home(props: Props) {
   return (
     <>
-      <HomeHeader />
+      <HomeHeader 
+        currentCategory = {props.currentCategory}
+        setCurrentCatgory = {props.setCurrentCategory}
+      />
     </>
   );
 }
