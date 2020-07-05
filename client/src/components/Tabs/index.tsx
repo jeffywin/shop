@@ -14,11 +14,11 @@ function Tabs() {
         <HomeOutlined />
         <span>首页</span>
       </NavLink>
-      <NavLink exact to="/profile">
+      <NavLink exact to="/detail">
         <ShoppingCartOutlined />
-        <span>购物车</span>
+        <span>详情</span>
       </NavLink>
-      <NavLink exact to="/mine">
+      <NavLink exact to="/profile">
         <ProfileOutlined />
         <span>个人中心</span>
       </NavLink>

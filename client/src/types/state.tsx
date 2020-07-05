@@ -6,7 +6,22 @@ export interface HomeState {
 
 export interface MineState {}
 
-export interface ProfileState {}
+export enum LOGIN_TYPES {
+  UN_VALIDATE = 'UN_VALIDATE',
+  LOGINED = 'LOGINED',
+  UN_LOGINED = 'UN_LOGINED'
+}
+interface User {
+  username: string,
+  email: string,
+  avatar: string
+}
+
+export interface ProfileState {
+  loginState: LOGIN_TYPES,
+  user: User | null,
+  error: string | null
+}
 
 export interface CombinedState {
   home: HomeState;

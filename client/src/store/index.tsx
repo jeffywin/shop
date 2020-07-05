@@ -15,4 +15,4 @@ let store = applyMiddleware(
 
 export default store;
 
-// applyMiddleware(createStore)(rootReducer)
+// applyMiddleware(中间件)(createStore)(rootReducer)
