@@ -1,5 +1,7 @@
-import express, {Express} from 'express';
-import mongoose from 'mongoose';
+import express, {Express, Request, Response, NextFunction} from 'express';
+// import mongoose from 'mongoose';
+import errorMiddleware from './errorMiddleware/errorMiddleware';
+import HttpException from './exception/HttpException';
 import cors from 'cors';
 import path from 'path';
 import helmet from 'helmet';
@@ -22,6 +24,12 @@ app.get('/', (_req, res, _next) => {
         data: 'hello jeffywin'
     })
 });
+app.use((_req: Request, _res: Response, next: NextFunction) => {
+    const error = new HttpException(404, '没有匹配到对应路由');
+    next(error);
+});
+// 错误处理中间件
+app.use(errorMiddleware);
 
 (async function(){
     const PORT = process.env.PORT;
