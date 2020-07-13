@@ -1,5 +1,5 @@
 import express, {Express, Request, Response, NextFunction} from 'express';
-// import mongoose from 'mongoose';
+import mongoose from 'mongoose';
 import errorMiddleware from './errorMiddleware/errorMiddleware';
 import HttpException from './exception/HttpException';
 import cors from 'cors';
@@ -33,9 +33,18 @@ app.use((_req: Request, _res: Response, next: NextFunction) => {
 // 错误处理中间件
 app.use(errorMiddleware);
 
-(async function(){
+// (async function(){
+//     const PORT = process.env.PORT;
+//     app.listen(PORT, () => {
+//         console.log('running in http:// localhost: 8001')
+//     })
+// })()
+(async function () {
     const PORT = process.env.PORT;
+    mongoose.set("useNewUrlParser", true);
+    mongoose.set("useUnifiedTopology", true);
+    await mongoose.connect("mongodb://localhost/jeffywin-server");
     app.listen(PORT, () => {
-        console.log('running in http:// localhost: 8001')
-    })
-})()
+      console.log(`Running on http://localhost:${PORT}`);
+    });
+  })();
