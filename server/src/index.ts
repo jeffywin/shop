@@ -8,7 +8,7 @@ import helmet from 'helmet';
 import 'dotenv/config';
 import morgan from 'morgan';
 import { urlencoded } from 'body-parser';
-
+import * as userController from './controllers/user';
 const app: Express = express();
 
 app.use(cors());
@@ -24,6 +24,8 @@ app.get('/', (_req, res, _next) => {
         data: 'hello jeffywin'
     })
 });
+
+app.post('/user/register', userController.register)
 app.use((_req: Request, _res: Response, next: NextFunction) => {
     const error = new HttpException(404, '没有匹配到对应路由');
     next(error);
