@@ -1,6 +1,5 @@
 import mogoose, { Schema, Model, Document} from 'mongoose';
 import validator from 'validator';
-
 export interface UserDocument extends Document {
     username: String,
     password: String,
