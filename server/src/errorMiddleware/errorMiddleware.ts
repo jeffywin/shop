@@ -1,3 +1,4 @@
+// 错误处理中间件是一个函数，原生的错误处理是比较简陋和难看，比如 can't GET /xx
 import HttpException from '../exception/HttpException';
 import { Request, Response, NextFunction} from 'express';
 import { INTERNAL_SERVER_ERROR } from 'http-status-codes';

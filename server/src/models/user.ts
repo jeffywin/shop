@@ -1,10 +1,12 @@
-import mogoose, { Schema, Model, Document} from 'mongoose';
+import mogoose, { Schema, Model, Document, HookNextFunction} from 'mongoose';
 import validator from 'validator';
+import bcrtptjs from 'bcryptjs';
+
 export interface UserDocument extends Document {
-    username: String,
-    password: String,
-    avatar: String,
-    email: String
+    username: string,
+    password: string,
+    avatar: string,
+    email: string
 }
 const UserSchema: Schema<UserDocument> = new Schema({
     username: {
@@ -24,6 +26,18 @@ const UserSchema: Schema<UserDocument> = new Schema({
         trim: true
     }
 }, {timestamps: true}) // 使用时间戳，自动添加两个字段 createdAt updatedAt
-
+// 每次保存文档之前操作
+UserSchema.pre<UserDocument>('save', async function(next: HookNextFunction) {
+    // 如果密码没改过
+    if (!this.isModified(this.password)) {
+        next()
+    }
+    try {
+        this.password = await bcrtptjs.hash(this.password, 10);
+        next()
+    } catch (error) {
+        next(error)
+    }
+})
 export const User: Model<UserDocument> = mogoose.model<UserDocument>('user', UserSchema);
 // new User().password 可以点出来 
