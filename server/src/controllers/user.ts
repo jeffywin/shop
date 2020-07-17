@@ -2,7 +2,7 @@ import {Request, Response, NextFunction} from 'express';
 import {User, UserDocument} from '../models';
 import HttpException from '../exception/HttpException';
 import {validateRegisterInput} from '../utils/validator';
-import {UNPROCESSABLE_ENTITY} from 'http-status-codes';
+import {UNPROCESSABLE_ENTITY, UNAUTHORIZED} from 'http-status-codes';
 
 export const register = async(req: Request, res: Response, next: NextFunction) => {
     let {username, password, confirmPassword, email} = req.body;
@@ -25,5 +25,23 @@ export const register = async(req: Request, res: Response, next: NextFunction) =
         next(error)
     }
    
+}
+
+export const login = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const {username, password} = req.body;
+        // 给User扩展一个login方法,包括登录校验功能
+        let user = await User.login(username, password);
+        if(user) {
+            res.json({
+                success: true,
+                data: user
+            })
+        } else {
+            throw new HttpException(UNAUTHORIZED, '登录失败')
+        }
+    } catch (error) {
+        next(error);
+    }
 }
 

@@ -26,10 +26,10 @@ const UserSchema: Schema<UserDocument> = new Schema({
         trim: true
     }
 }, {timestamps: true}) // 使用时间戳，自动添加两个字段 createdAt updatedAt
-// 每次保存文档之前操作
+// 每次保存文档之前对密码加密操作
 UserSchema.pre<UserDocument>('save', async function(next: HookNextFunction) {
     // 如果密码没改过
-    if (!this.isModified(this.password)) {
+    if (!this.isModified('password')) {
         next()
     }
     try {
@@ -39,5 +39,23 @@ UserSchema.pre<UserDocument>('save', async function(next: HookNextFunction) {
         next(error)
     }
 })
-export const User: Model<UserDocument> = mogoose.model<UserDocument>('user', UserSchema);
+
+UserSchema.static('login', async function(this: any, username: string, password: string): Promise<UserDocument | null> {
+    let user: UserDocument | null = await this.model('User').findOne({username});
+
+    if (user) {
+        const matched = await bcrtptjs.compare(password, user.password);
+        if (matched) {
+            return user;
+        } else {
+            return null;
+        }
+    } else {
+        return null
+    }
+})
+export interface UserModel<T extends Document> extends Model<T> {
+    login: (username: string, password: string) => UserDocument | null
+}
+export const User: UserModel<UserDocument> = mogoose.model<UserDocument, UserModel<UserDocument>>('User', UserSchema);
 // new User().password 可以点出来 

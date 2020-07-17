@@ -26,6 +26,9 @@ app.get('/', (_req, res, _next) => {
 });
 
 app.post('/user/register', userController.register)
+
+app.post('/user/login', userController.login)
+
 app.use((_req: Request, _res: Response, next: NextFunction) => {
     const error = new HttpException(404, '没有匹配到对应路由');
     next(error);
