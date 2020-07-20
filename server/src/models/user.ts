@@ -1,12 +1,14 @@
 import mogoose, { Schema, Model, Document, HookNextFunction} from 'mongoose';
 import validator from 'validator';
 import bcrtptjs from 'bcryptjs';
-
+import jwt from 'jsonwebtoken';
+import { UserPayload } from '../typing/jwt';
 export interface UserDocument extends Document {
     username: string,
     password: string,
     avatar: string,
-    email: string
+    email: string,
+    generaToken: () => string
 }
 const UserSchema: Schema<UserDocument> = new Schema({
     username: {
@@ -40,9 +42,15 @@ UserSchema.pre<UserDocument>('save', async function(next: HookNextFunction) {
     }
 })
 
+// 给User的实例user扩展一个generaToken 方法
+UserSchema.methods.generaToken = function(): string {
+    let payload: UserPayload = ({id: this._id});
+    return jwt.sign(payload, process.env.JWT_SECRET_KEY || 'jeffywin', {expiresIn: '1h'})
+}   
+
+// 给User模型扩展一个login方法
 UserSchema.static('login', async function(this: any, username: string, password: string): Promise<UserDocument | null> {
     let user: UserDocument | null = await this.model('User').findOne({username});
-
     if (user) {
         const matched = await bcrtptjs.compare(password, user.password);
         if (matched) {

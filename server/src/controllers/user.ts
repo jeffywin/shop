@@ -30,7 +30,7 @@ export const register = async(req: Request, res: Response, next: NextFunction) =
 export const login = async (req: Request, res: Response, next: NextFunction) => {
     try {
         const {username, password} = req.body;
-        // 给User扩展一个login方法,包括登录校验功能
+        // 给User扩展一个login方法,在models中的user中扩展，包括登录校验功能
         let user = await User.login(username, password);
         if(user) {
             res.json({
