@@ -8,7 +8,7 @@ export interface UserDocument extends Document {
     password: string,
     avatar: string,
     email: string,
-    generaToken: () => string
+    generateToken: () => string
 }
 const UserSchema: Schema<UserDocument> = new Schema({
     username: {
@@ -43,7 +43,7 @@ UserSchema.pre<UserDocument>('save', async function(next: HookNextFunction) {
 })
 
 // 给User的实例user扩展一个generaToken 方法
-UserSchema.methods.generaToken = function(): string {
+UserSchema.methods.generateToken = function(): string {
     let payload: UserPayload = ({id: this._id});
     return jwt.sign(payload, process.env.JWT_SECRET_KEY || 'jeffywin', {expiresIn: '1h'})
 }   
