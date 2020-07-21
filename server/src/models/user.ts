@@ -27,7 +27,18 @@ const UserSchema: Schema<UserDocument> = new Schema({
         },
         trim: true
     }
-}, {timestamps: true}) // 使用时间戳，自动添加两个字段 createdAt updatedAt
+    // 使用时间戳，自动添加两个字段 createdAt updatedAt
+}, {timestamps: true, toJSON: {
+    transform: function(_doc: any, result: any) {
+        result.id = result._id,
+        delete result._id,
+        delete result.__v,
+        delete result.password,
+        delete result.createdAt,
+        delete result.updatedAt
+        return result
+    }
+}}) 
 // 每次保存文档之前对密码加密操作
 UserSchema.pre<UserDocument>('save', async function(next: HookNextFunction) {
     // 如果密码没改过

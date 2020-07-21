@@ -6,8 +6,9 @@ import {UNPROCESSABLE_ENTITY, UNAUTHORIZED} from 'http-status-codes';
 import jwt from 'jsonwebtoken';
 import { UserPayload } from 'src/typing/jwt';
 
-export const validate = async(req: Request, res: Response, next: NextFunction) => {
+export const validate = async(req: Request, res: Response, _next: NextFunction) => {
     const authorization = req.headers['authorization'];
+    // Authorization    Bearer Token
     if (authorization) {
         const token = authorization.split(' ')[1];
         if (token) {
@@ -15,10 +16,9 @@ export const validate = async(req: Request, res: Response, next: NextFunction) =
                 const payload: UserPayload = jwt.verify(token, process.env.JWT_SECRET_KEY!) as UserPayload;
                 const user = await User.findById(payload.id); 
                 if (user) {
-                    delete user.password;
                     res.json({
                         success: true,
-                        data: user
+                        data: user.toJSON()
                     });
                 }
             } catch (error) {
@@ -43,9 +43,10 @@ export const register = async(req: Request, res: Response, next: NextFunction) =
         }
         let user: UserDocument = new User({username, password, confirmPassword, email})
         await user.save();
+        let token = user.generateToken();
         res.json({
             success: true,
-            data: user
+            data: {token}
         })
     } catch (error) {
         next(error)
@@ -62,7 +63,7 @@ export const login = async (req: Request, res: Response, next: NextFunction) => 
             let token = user.generateToken();
             res.json({
                 success: true,
-                data: token
+                data: {token}
             })
         } else {
             throw new HttpException(UNAUTHORIZED, '登录失败')
