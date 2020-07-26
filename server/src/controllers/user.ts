@@ -6,7 +6,7 @@ import {UNPROCESSABLE_ENTITY, UNAUTHORIZED} from 'http-status-codes';
 import jwt from 'jsonwebtoken';
 import { UserPayload } from 'src/typing/jwt';
 
-export const validate = async(req: Request, res: Response, _next: NextFunction) => {
+export const validate = async(req: Request, res: Response, next: NextFunction) => {
     const authorization = req.headers['authorization'];
     // Authorization    Bearer Token
     if (authorization) {
@@ -22,11 +22,13 @@ export const validate = async(req: Request, res: Response, _next: NextFunction) 
                     });
                 }
             } catch (error) {
-                throw new HttpException(UNAUTHORIZED, '用户不合法')
+                next(new HttpException(UNAUTHORIZED, '用户不合法'))
             }
+        } else {
+            next(new HttpException(UNAUTHORIZED, 'token未提供'))
         }
     } else {
-        throw new HttpException(UNAUTHORIZED, 'authorization未提供')
+        next(new HttpException(UNAUTHORIZED, 'authorization未提供'))
     }
 }
 
