@@ -23,6 +23,17 @@ export interface ProfileState {
   error: string | null
 }
 
+export interface LoginPayload {
+  username: string,
+  password: string,
+}
+
+export interface LoginResult {
+  data: { token: string }
+  success: boolean,
+  message?: any
+}
+
 export interface CombinedState {
   home: HomeState;
   mine: MineState;

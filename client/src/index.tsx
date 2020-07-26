@@ -8,8 +8,8 @@ import { ConnectedRouter } from "connected-react-router";
 import store from "./store/index";
 import history from "./history";
 import Home from "./routes/Home/index";
-import Login from "./routes/Home/index";
-import Register from "./routes/Home/index";
+import Login from "./routes/Login";
+// import Register from "./routes/Register";
 import Mine from "./routes/Mine/index";
 import Profile from "./routes/Profile/index";
 import Tabs from "@/components/Tabs";
@@ -26,7 +26,7 @@ ReactDOM.render(
             <Route path="/detail" exact component={Mine}></Route>
             <Route path="/profile" exact component={Profile}></Route>
             <Route path="/login" exact component={Login}></Route>
-            <Route path="/register" exact component={Register}></Route>
+            {/* <Route path="/register" exact component={Register}></Route> */}
           </Switch>
         </main>
         <Tabs />
