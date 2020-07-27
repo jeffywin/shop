@@ -1,6 +1,6 @@
 import axios, {AxiosRequsetConfig} from 'axios';
 
-axios.defaults.baseURL = 'localhost:8001';
+axios.defaults.baseURL = 'localhost:8081';
 axios.defaults.headers.post['Content-type'] = 'application/json';
 axios.interceptors.request.use(
     (config: AxiosRequsetConfig) => {
