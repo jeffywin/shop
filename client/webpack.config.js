@@ -10,6 +10,17 @@ module.exports = {
         path: path.join(__dirname, 'dist'),
         filename: 'bundle.js'
     },
+    devServer: {
+        proxy: {
+          "/user": {
+            target: "http://localhost:8001", 
+            changeOrigin: true,
+            pathRewrite: {
+              "": ""
+            }
+          }
+        }
+    },
     devtool: 'source-map',
     devServer: {
         hot: true,//热更新插件

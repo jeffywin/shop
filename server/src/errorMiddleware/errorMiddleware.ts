@@ -11,6 +11,8 @@ const errorMiddleware = (err: HttpException, _request: Request, response: Respon
     if (err.errors && Object.keys(err.errors).length > 0) {
         result.errors = err.errors;
     }
+    console.log(result);
+    
     response.status(err.status | INTERNAL_SERVER_ERROR).send(result);
 }
 

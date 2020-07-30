@@ -10,12 +10,10 @@ import mapDispatchToProps from '@/store/actions/profile'
 import Nav from '@/components/Nav';
 type Props = PropsWithChildren<RouteComponentProps & ReturnType<typeof mapStateToProps> & mapDispatchToProps>
 
-function Profile(props: Props) {
-    console.log('xxx', props);
-    
+function Profile(props: Props) {    
     let content;
     useEffect(() => {
-        // props.validate();
+        props.validate();
     }, []);
     if (props.loginState === LOGIN_TYPES.UN_VALIDATE) {
         content = null
